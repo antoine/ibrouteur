@@ -1,0 +1,32 @@
+#import config
+#import uihelper
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:dc="http://purl.org/dc/elements/1.1/" >
+
+  <title>Antoine's images</title>
+  <link rel="self" href="${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/ATOM" />
+  <link rel="alternate" type="text/html" href="${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}"/>
+  <id >${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/ATOM</id>
+  <subtitle>images from delaunay.org/antoine</subtitle>
+  <generator uri="http://delaunay.org/antoine/i/">Ibrouteur</generator>
+  #for f in $files:
+  <entry>
+  <title>$f.country - $f.location / $f.date
+  </title>
+    <link  rel="alternate" type="text/html" href="${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/$config.file_url_id$f.id"/>
+    <content type="html"><![CDATA[
+      <p>
+        <a href="${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/$config.file_url_id$f.id"><img src="$uihelper.get_thumbnail($f.filename)"/></a>
+        ##$uihelper.get_nice_info($f.id)
+      </p>
+    ]]></content>
+    <published>$f.date.strftime("%Y-%m-%dT%H:%M:%SZ")</published>
+    <updated>$f.date.strftime("%Y-%m-%dT%H:%M:%SZ")</updated>
+    <id>${config.server_name}${config.base_url}image$f.id</id>
+    <author>
+      <name>$f.author</name>
+    </author>
+  </entry>
+    #end for
+</feed>

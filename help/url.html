@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang='en'>
+  <head>
+    <title>iBrouteur - url write-it-yourself</title>            <style type="text/css">
+      <!-- @import "/css/modern.css"; -->
+    </style>
+  </head>    
+  <body>      
+    <div id="header">        
+
+      <div class="backlinks">          
+        <a href="../../..">delaunay.org</a>&gt;<a href="../..">antoine</a>&gt;<a href="..">iBrouteur</a>
+        <div class="help"><a href="eng">help</a> - <a href="fr">aide</a></div>
+      </div>
+      <h1>iBrouteur - url write-it-yourself guide</h1>
+    </div>
+    <div id="body">
+    manipulating urls in ibrouteur let you easily link to it, it is also the only way to lookup for images using multiple values for the tags and subjects (so that you can find all the images of me and you or some other edonist query oriented query)
+     
+     <ul>
+        <li>/ibrouteur/year2005 : images taken in 2005</li>
+        <li>/ibrouteur/year : list of all the possible years</li>
+        <li>/ibrouteur/year2005/SubjectMoi : list of all pictures of me taken in 2005</li>
+        <li>/ibrouteur/subject/year2005 : will remove everything after the undecided subject and propose a list of them, the subjects.</li>
+        <li>/ibrouteur/xxx : will show all images which have the value xxx in an index. Will work only if xxx is not an index name like subject, year, location or album or etc. we only use one index, so we go from the specific to the generic : 
+          <ul>
+          <li>is xxx a possible year? YES, is xxx in the year? YES, we print
+          <li>is xxx a possible year? YES, is xxx in the year? NO, can xxx be some other index? NO, we lookup xxx in the tags 
+          </ul>
+        </li>
+        </ul>
+
+regexp used in decision when presented with a value not preceded by an index :
+<ul>
+<li>year is 20[10][0-9]$</li>
+<li>date is 20[10][0-9]-[01][0-9]-[0-3][0-9]$</li>
+<li>subject = author is [A-Z][A-Za-z\-\ ]*$ -&gt; but we might have possible values in both? author is not going to be used and is therefore only accessible via the authorxxx combinaison</li>
+<li>album = location is letters* [\w\ \-]*$, same question of ambiguite but location will never be identical to album </li>
+<li>week is [1-52]$ </li>
+<li>month is [1-12]$ or January-December or Janvier-Decembre (trim the accents if french is used...)</li>
+<li>the current order of preference is : year &gt; subject &gt; month &gt; date &gt; location &gt; album &gt; week</li>
+</ul>
+what will happen if :
+<dl>
+<dt>the value asked for an index does not exists? </dt>
+  <dd> return empty set and let the use remove the indexes he choosed </dd>
+<dt> the combination of all index/values gives an empty set? </dt>
+  <dd> return the page with no result and give the user the option of removing/changing the values of the indexes, this has to be done in BrowseLayout</dd>
+<dt>the user ask for Moi/Kai</dt>
+  <dd> for multiple possible values like tag and subject then we get /subjectMoi/subjectKai (all the nice pictures with me and Kai together), if Kai is not in the subject then we get /subjectMoi/tagKai</dd>
+  <dd> for unique possible values like location, /bruxelles/bruxelles for example, we get /locationbruxelles/tagbruxelles. If a unique index already has a value then we lookup all the other values which could be found in this index in the tags and only there</dd>
+  </dl>
+    </div>
+  </body>
+</html>

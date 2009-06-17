@@ -1,0 +1,59 @@
+web image gallery software, it's like flickr but not so good ;)
+
+images have infos associated to them:
+- from the EXIF for the date, overriding possible
+- from the directory they are in
+- from the file name
+
+thoses informations are collected under differents indexes (data, country, subjects, tag, ...)
+this information is collected in a database use for querying the gallery. The synchronisation process between the database and the files is launched manually after new images are updated. The original images are not modified in any way.
+
+to add new images, drop them were needed and go to the http://<server>/admin/sync page
+
+make use of scriptaculous to ajax some data. if the library is not present or javascript not running then we have a nice fallback working by loading an intermediary page with the data.
+
+some thoughts went into the urls, please check help/url.html. Basically you can query by specifying an index and a value or just a value (then the first index with that value is used). Some index support multiple values (tag and subject), so you can logical AND operations. The system generate _exact_ url by always specifying the index used, the data actually used as very little to no value-crossover between indexes so you should be safe ommiting those.
+
+the images need to be organize through a hierachy of folders that actually suit my needs, don't expect them to suit yours. the indexbuilder is where this can be changed
+
+REQUIREMENTS
+
+python : 
+  python-imaging
+  web.py (http://webpy.org), works using web_0.137.py, this is a very old version, your mileage may vary
+  flup 
+  cheetah
+fast_cgi server (tested on apache, should work on lighttp) with some sort of mod_rewrite
+
+INSTALL
+
+- config.py is a symbolic link pointing to your config file, it is config_prog.py on the server
+- index.fcgi is a symbolic link pointing to index.py, this is needed for fcgi to work right now, am looking for improvements 
+- you need to create a file named db_params.py whose content is :
+
+user='dbusername'
+password='dbpassword'
+database='dbname'
+
+- the rewrite rules I used are (mod_rewrite for apache):
+	RewriteRule ^/antoine/i/help(.*) /antoine/i/help$1 [L]
+	RewriteRule ^/antoine/i$ /antoine/i/index.fcgi/ [L]
+	RewriteRule ^/antoine/i/(.*) /antoine/i/index.fcgi/$1 [L]
+
+CONTACT
+rouadec@gmail.com
+
+COPYRIGHT
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+

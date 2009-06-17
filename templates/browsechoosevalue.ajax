@@ -1,0 +1,25 @@
+#import config
+#import HTMLTemplates as HTML
+#import uihelper
+
+#filter Filter
+
+##$HTML.section_start('','index values', '')
+  <ul>
+    #if $varExists('index_possible_values')
+      #if $current_index == 'tag'
+        #for tag in $index_possible_values
+          <a href='${config.base_url}${uihelper.build_link($sel_ik+[($current_index,$tag.value)])}' class='quant${tag.quantity} label'>$tag.value</a>
+        #end for
+      #else
+        #for index_value in $index_possible_values
+          <li>
+            <a href='${config.base_url}${uihelper.build_link($sel_ik+[($current_index,$index_value.value)])}'>$uihelper.hr_tag($current_index, $index_value.value)</a> <span class='quantity'>($index_value.quantity images)</span>
+          </li>
+        #end for
+      #end if
+      </ul>
+    #else
+      <p>no keys could be found for this index, this is not supposed to happen... unless you've been writing some gibberish instead of a nice url, if not then just forget that it has happened and go back.</p><p>You can also try to choose another <a href='$config.base_url'>index</a>.</p>
+  #end if
+##$HTML.section_end

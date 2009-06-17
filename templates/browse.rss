@@ -1,0 +1,30 @@
+#import config
+#import uihelper
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>delaunay.org/antoine images</title>
+    <link>
+      ${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}
+    </link>
+    <description>images from delaunay.org/antoine</description>
+    <language>en-us</language>
+    #for f in $files:
+    <item>
+    <title>$f.country - $f.location / $f.date
+    </title>
+      <link>
+        ${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/$config.file_url_id$f.id
+      </link>
+      <description><![CDATA[
+        <p>
+          <a href="${config.server_name}${config.base_url}${uihelper.build_link($sel_ik)}/$config.file_url_id$f.id"><img src="$uihelper.get_thumbnail($f.filename)"/></a>
+          ##$uihelper.get_nice_info($f.id)
+        </p>
+      ]]></description>
+      <pubDate>$f.date.strftime("%a, %d %b %Y %H:%M:%S GMT")</pubDate>
+      <guid>${config.server_name}${config.base_url}image$f.id</guid>
+    </item>
+    #end for
+  </channel>
+</rss>
