@@ -1,5 +1,8 @@
 web image gallery software, it's like flickr but not so good ;)
 
+I do not run this software anymore, but the source code is here for anyone to use (see licence down there).
+I was quite happy with it and so was google, the indexing was quite good.
+
 images have infos associated to them:
 - from the EXIF for the date, overriding possible
 - from the directory they are in
@@ -10,7 +13,7 @@ this information is collected in a database use for querying the gallery. The sy
 
 to add new images, drop them were needed and go to the http://<server>/admin/sync page
 
-make use of scriptaculous to ajax some data. if the library is not present or javascript not running then we have a nice fallback working by loading an intermediary page with the data.
+make use of scriptaculous to ajax some data. if the library is not present or javascript not running then we have a fallback working by loading an intermediary page with the data.
 
 some thoughts went into the urls, please check help/url.html. Basically you can query by specifying an index and a value or just a value (then the first index with that value is used). Some index support multiple values (tag and subject), so you can logical AND operations. The system generate _exact_ url by always specifying the index used, the data actually used as very little to no value-crossover between indexes so you should be safe ommiting those.
 
